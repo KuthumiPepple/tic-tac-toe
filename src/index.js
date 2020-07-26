@@ -83,6 +83,7 @@ class Game extends React.Component {
       xIsNext: true,
     };
   }
+  prevSelected = null;
 
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -94,6 +95,7 @@ class Game extends React.Component {
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
     [location[0], location[1]] = getLocation(i);
+    this.prevSelected = null;
     this.setState({
       history: history.concat([
         {
@@ -130,7 +132,17 @@ class Game extends React.Component {
         : "Go to game start";
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button
+            style={{
+              fontWeight: this.prevSelected === step ? "bold" : "normal",
+            }}
+            onClick={() => {
+              this.jumpTo(move);
+              this.prevSelected = step;
+            }}
+          >
+            {desc}
+          </button>
         </li>
       );
     });
